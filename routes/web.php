@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,13 @@ Route::name('practice.')->group(function () {
         return view('pages.practice.2');
     });
 });
+
+Route::get('/login', [LoginController::class, 'showLoginPage'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+// Route untuk halaman utama/dashboard setelah login
+Route::middleware('auth')->get('/', function () {
+    return view('pages.practice.index');
+})->name('index-practice');
