@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\StockTransactionController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockOpnameController;
+use App\Http\Controllers\ReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,3 +38,31 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->get('/', function () {
     return view('pages.practice.index');
 })->name('index-practice');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/transactions', [StockTransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/create', [StockTransactionController::class, 'create'])->name('transactions.create');
+    Route::post('/transactions', [StockTransactionController::class, 'store'])->name('transactions.store');
+});
+
+Route::get('/stock-opname', function () {
+    $products = \App\Models\Product::all();
+    return view('pages.transactions.opname', compact('products'));
+})->name('stock.opname');
+
+
+
+Route::resource('products', ProductController::class);
+
+Route::get('opname', [StockOpnameController::class, 'index'])->name('opname.index');
+Route::put('opname', [StockOpnameController::class, 'update'])->name('opname.update');
+
+
+
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+Route::get('/reports/transactions', [ReportController::class, 'transactions'])->name('reports.transactions');
+Route::get('/reports/stocks', [ReportController::class, 'stocks'])->name('reports.stocks');
+Route::get('/reports/export/pdf', [ReportController::class, 'exportPDF'])->name('reports.export.pdf');
+Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
+
