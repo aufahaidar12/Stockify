@@ -72,5 +72,19 @@
                 </li>
             </ul>
         </li>
+        <!-- Menu Manajemen Pengguna -->
+        <li>
+            <a href="{{ route('users.index') }}"
+            class="flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700
+                    {{ request()->routeIs('users.*') ? 'bg-gray-200 dark:bg-gray-600 font-semibold' : '' }}">
+                <!-- Icon -->
+                <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 9V5h4v4H8zm0 2h4v4H8v-4z"></path>
+                </svg>
+                <span class="ml-3">Manajemen Pengguna</span>
+            </a>
+        </li>
+
     </ul>
 </x-sidebar-dashboard>

@@ -6,6 +6,7 @@ use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,4 +66,8 @@ Route::get('/reports/transactions', [ReportController::class, 'transactions'])->
 Route::get('/reports/stocks', [ReportController::class, 'stocks'])->name('reports.stocks');
 Route::get('/reports/export/pdf', [ReportController::class, 'exportPDF'])->name('reports.export.pdf');
 Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class);
+});
 
