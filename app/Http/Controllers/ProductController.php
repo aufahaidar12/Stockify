@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -44,8 +45,7 @@ class ProductController extends Controller
             'image'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'minimum_stock'    => 'required|integer|min:0',
         ]);
-
-        // Upload image jika ada
+      
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
             $validated['image'] = $imagePath;
@@ -83,7 +83,6 @@ class ProductController extends Controller
             'minimum_stock'    => 'required|integer|min:0',
         ]);
 
-        // Upload image baru jika ada
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
             $validated['image'] = $imagePath;
