@@ -1,72 +1,66 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-         Edit Produk
-    </h2>
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
+    <h2 class="text-2xl font-semibold mb-6">Edit Produk</h2>
+    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
 
-    {{-- Notifikasi Error --}}
-    @if($errors->any())
-        <div class="bg-red-100 text-red-700 p-4 rounded mb-5 shadow">
-            <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Nama Produk</label>
+            <input type="text" name="name" class="w-full border rounded p-2" value="{{ $product->name }}" required>
         </div>
-    @endif
 
-    {{-- Form Edit Produk --}}
-    <div class="bg-white rounded-lg shadow p-6 max-w-lg">
-        <form action="{{ route('products.update', $product->id) }}" method="POST" class="space-y-5">
-            @csrf
-            @method('PUT')
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">SKU</label>
+            <input type="text" name="sku" class="w-full border rounded p-2" value="{{ $product->sku }}" required>
+        </div>
 
-            {{-- Nama Produk --}}
-            <div>
-                <label class="block font-semibold mb-2 text-gray-700">Nama Produk</label>
-                <input type="text" name="name" value="{{ old('name', $product->name) }}" 
-                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    placeholder="Masukkan nama produk" required>
-            </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Kategori</label>
+            <select name="category_id" class="w-full border rounded p-2" required>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
-            {{-- Stok --}}
-            <div>
-                <label class="block font-semibold mb-2 text-gray-700">Stok</label>
-                <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" 
-                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    min="0" placeholder="Masukkan jumlah stok" required>
-            </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Supplier</label>
+            <select name="supplier_id" class="w-full border rounded p-2" required>
+                @foreach ($suppliers as $supplier)
+                    <option value="{{ $supplier->id }}" @selected($product->supplier_id == $supplier->id)>{{ $supplier->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
-            {{-- Stok Minimum --}}
-            <div>
-                <label class="block font-semibold mb-2 text-gray-700">Stok Minimum</label>
-                <input type="number" name="minimum_stock" value="{{ old('minimum_stock', $product->minimum_stock) }}" 
-                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    min="0" placeholder="Minimal stok untuk status aman" required>
-            </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Harga Beli</label>
+            <input type="number" name="purchase_price" class="w-full border rounded p-2" value="{{ $product->purchase_price }}" required>
+        </div>
 
-            {{-- Harga --}}
-            <div>
-                <label class="block font-semibold mb-2 text-gray-700">Harga (Rp)</label>
-                <input type="number" name="price" value="{{ old('price', $product->price) }}" 
-                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    min="0" placeholder="Masukkan harga produk" required>
-            </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Harga Jual</label>
+            <input type="number" name="selling_price" class="w-full border rounded p-2" value="{{ $product->selling_price }}" required>
+        </div>
 
-            {{-- Tombol --}}
-            <div class="flex items-center gap-4">
-                <button type="submit" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow">
-                    Update
-                </button>
-                <a href="{{ route('products.index') }}" 
-                   class="text-gray-600 hover:text-gray-800 underline">
-                    Batal
-                </a>
-            </div>
-        </form>
-    </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Stok</label>
+            <input type="number" name="stock" class="w-full border rounded p-2" value="{{ $product->stock }}" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Gambar</label>
+            <input type="file" name="image" class="w-full border rounded p-2">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Deskripsi</label>
+            <textarea name="description" class="w-full border rounded p-2">{{ $product->description }}</textarea>
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
+    </form>
 </div>
 @endsection

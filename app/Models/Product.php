@@ -1,13 +1,31 @@
 <?php
 
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'sku',
+        'category_id',
+        'supplier_id',
+        'purchase_price',
+        'selling_price',
+        'stock',
+        'image',
+        'description',
+    ];
 
-    protected $fillable = ['name', 'stock', 'minimum_stock', 'price']; // kolom sesuai tabel
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }
