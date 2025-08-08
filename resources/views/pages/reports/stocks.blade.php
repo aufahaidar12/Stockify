@@ -12,7 +12,7 @@
             <thead>
                 <tr class="bg-gray-100 text-gray-700 text-left">
                     <th class="p-3 border-b">Nama Produk</th>
-                    <th class="p-3 border-b">Stok</th>
+                    <th class="p-3 border-b">Stok Saat Ini</th>
                     <th class="p-3 border-b">Stok Minimum</th>
                     <th class="p-3 border-b">Harga</th>
                     <th class="p-3 border-b">Terakhir Update</th>
@@ -23,13 +23,13 @@
                     <tr class="hover:bg-gray-50">
                         <td class="p-3 border-b font-medium">{{ $product->name }}</td>
                         
-                        {{-- Stok dengan warna sesuai kondisi --}}
-                        <td class="p-3 border-b {{ $product->stock < $product->minimum_stock ? 'text-red-600 font-bold' : 'text-gray-800' }}">
-                            {{ $product->stock }}
+                        {{-- Gunakan final_stock --}}
+                        <td class="p-3 border-b {{ $product->final_stock < $product->minimum_stock ? 'text-red-600 font-bold' : 'text-gray-800' }}">
+                            {{ $product->final_stock }}
                         </td>
-                        
+
                         <td class="p-3 border-b">{{ $product->minimum_stock }}</td>
-                        <td class="p-3 border-b">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                        <td class="p-3 border-b">Rp {{ number_format($product->selling_price, 0, ',', '.') }}</td>
                         <td class="p-3 border-b">{{ $product->updated_at->format('d-m-Y') }}</td>
                     </tr>
                 @empty

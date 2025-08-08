@@ -26,11 +26,15 @@
             <thead class="bg-gray-50 text-gray-700 uppercase text-xs">
                 <tr>
                     <th class="px-6 py-3">No</th>
-                    <th class="px-6 py-3">Nama Produk</th>
+                    <th class="px-6 py-3">Nama</th>
+                    <th class="px-6 py-3">SKU</th>
+                    <th class="px-6 py-3">Kategori</th>
+                    <th class="px-6 py-3">Supplier</th>
+                    <th class="px-6 py-3">Deskripsi</th>
+                    <th class="px-6 py-3 text-center">Harga Beli</th>
+                    <th class="px-6 py-3 text-right">Harga Jual</th>
                     <th class="px-6 py-3 text-center">Stok</th>
-                    <th class="px-6 py-3 text-center">Stok Minimum</th>
-                    <th class="px-6 py-3 text-right">Harga</th>
-                    <th class="px-6 py-3 text-center">Status</th>
+                    <th class="px-6 py-3 text-center">Gambar</th>
                     <th class="px-6 py-3 text-center">Aksi</th>
                 </tr>
             </thead>
@@ -39,36 +43,32 @@
                     <tr class="border-b hover:bg-gray-50 transition">
                         <td class="px-6 py-4">{{ $loop->iteration }}</td>
                         <td class="px-6 py-4 font-medium text-gray-800">{{ $product->name }}</td>
-
-                        {{-- Stok dengan indikator warna --}}
-                        <td class="px-6 py-4 text-center font-semibold 
-                            {{ $product->stock < $product->minimum_stock ? 'text-red-600' : 'text-gray-800' }}">
-                            {{ $product->stock }}
+                        <td class="px-6 py-4 text-gray-600">{{ $product->sku }}</td>
+                        <td class="px-6 py-4 text-gray-600">
+                            {{ $product->category->name ?? '-' }}
                         </td>
-
-                        <td class="px-6 py-4 text-center text-gray-600">{{ $product->minimum_stock }}</td>
+                        <td class="px-6 py-4 text-gray-600">
+                            {{ $product->supplier->name ?? '-' }}
+                        </td>
+                        <td class="px-6 py-4 text-gray-600">
+                            {{ Str::limit($product->description, 50) }}
+                        </td>
+                        <td class="px-6 py-4 text-center text-gray-600">
+                            Rp {{ number_format($product->purchase_price, 0, ',', '.') }}
+                        </td>
                         <td class="px-6 py-4 text-right text-gray-800">
-                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                            Rp {{ number_format($product->selling_price, 0, ',', '.') }}
                         </td>
-
-                        {{-- Status --}}
+                        <td class="px-6 py-4 text-center text-gray-600">
+                            {{ $product->minimum_stock }}
+                        </td>
                         <td class="px-6 py-4 text-center">
-                            @if($product->stock == 0)
-                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">
-                                    Habis
-                                </span>
-                            @elseif($product->stock < $product->minimum_stock)
-                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold">
-                                    Stok Rendah
-                                </span>
+                            @if($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="Produk" class="h-12 w-12 object-cover rounded">
                             @else
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
-                                    Aman
-                                </span>
+                                <span class="text-gray-400 italic">Tidak ada</span>
                             @endif
                         </td>
-
-                        {{-- Aksi --}}
                         <td class="px-6 py-4 flex items-center justify-center gap-3">
                             <a href="{{ route('products.edit', $product->id) }}" 
                                 class="text-blue-600 hover:text-blue-800 font-medium">
@@ -86,7 +86,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center py-6 text-gray-500">
+                        <td colspan="12" class="text-center py-6 text-gray-500">
                             Belum ada produk yang tersedia.
                         </td>
                     </tr>

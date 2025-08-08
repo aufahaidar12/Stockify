@@ -9,5 +9,39 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'stock', 'minimum_stock', 'price']; // kolom sesuai tabel
+    protected $fillable = [
+        'category_id',
+        'supplier_id',
+        'name',
+        'sku',
+        'description',
+        'purchase_price',
+        'selling_price',
+        'image',
+        'minimum_stock',
+    ];
+
+    // Relasi ke kategori
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // Relasi ke supplier
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(\App\Models\StockTransaction::class);
+    }
+
+    public function stockTransactions()
+    {
+        return $this->hasMany(StockTransaction::class);
+    }
+
+
 }

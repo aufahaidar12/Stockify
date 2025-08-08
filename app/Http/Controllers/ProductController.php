@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Supplier;
 
 class ProductController extends Controller
 {
@@ -12,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::with(['category', 'supplier'])->latest()->paginate(10);
         return view('pages.products.index', compact('products'));
     }
 
@@ -21,7 +23,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('pages.products.create');
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        return view('pages.products.create', compact('categories', 'suppliers'));
     }
 
     /**
@@ -30,11 +34,22 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
-            'minimum_stock' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0'
+            'category_id'      => 'required|exists:categories,id',
+            'supplier_id'      => 'required|exists:suppliers,id',
+            'name'             => 'required|string|max:255',
+            'sku'              => 'nullable|string|max:100',
+            'description'      => 'nullable|string',
+            'purchase_price'   => 'required|numeric|min:0',
+            'selling_price'    => 'required|numeric|min:0',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'minimum_stock'    => 'required|integer|min:0',
         ]);
+
+        // Upload image jika ada
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
 
         Product::create($validated);
 
@@ -46,7 +61,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('pages.products.edit', compact('product'));
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        return view('pages.products.edit', compact('product', 'categories', 'suppliers'));
     }
 
     /**
@@ -55,11 +72,22 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
-            'minimum_stock' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0'
+            'category_id'      => 'required|exists:categories,id',
+            'supplier_id'      => 'required|exists:suppliers,id',
+            'name'             => 'required|string|max:255',
+            'sku'              => 'nullable|string|max:100',
+            'description'      => 'nullable|string',
+            'purchase_price'   => 'required|numeric|min:0',
+            'selling_price'    => 'required|numeric|min:0',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'minimum_stock'    => 'required|integer|min:0',
         ]);
+
+        // Upload image baru jika ada
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
 
         $product->update($validated);
 
