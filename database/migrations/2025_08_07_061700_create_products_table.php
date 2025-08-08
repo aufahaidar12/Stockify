@@ -30,6 +30,7 @@ return new class extends Migration
             // Foreign keys (optional, tergantung struktur relasi)
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            
         });
     }
 

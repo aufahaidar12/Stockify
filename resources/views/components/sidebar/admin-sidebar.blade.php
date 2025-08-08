@@ -84,5 +84,19 @@
                 <span class="ml-3">Manajemen Pengguna</span>
             </a>
         </li>
+
+        <!-- Menu Manajemen Suppliers -->
+        <li>
+            <a href="{{ route('suppliers.index') }}"
+            class="flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100
+                    dark:text-white dark:hover:bg-gray-700
+                    {{ request()->routeIs('suppliers.*') ? 'bg-gray-200 dark:bg-gray-600 font-semibold' : '' }}">
+                <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M4 3h12a1 1 0 011 1v2a1 1 0 01-.293.707L10 12l-6.707-5.293A1 1 0 013 6V4a1 1 0 011-1zM3 8l7 5 7-5v7a1 1 0 01-1 1H4a1 1 0 01-1-1V8z"/>
+                </svg>
+                <span class="ml-3">Manajemen Suppliers</span>
+            </a>
+        </li>
     </ul>
 </x-sidebar-dashboard>

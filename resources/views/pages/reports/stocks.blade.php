@@ -13,7 +13,7 @@
                 <tr class="bg-gray-100 text-gray-700 text-left">
                     <th class="p-3 border-b">Nama Produk</th>
                     <th class="p-3 border-b">Stok Saat Ini</th>
-                    <th class="p-3 border-b">Stok Minimum</th>
+                    <th class="p-3 border-b">Stok Produk</th>
                     <th class="p-3 border-b">Harga</th>
                     <th class="p-3 border-b">Terakhir Update</th>
                 </tr>
