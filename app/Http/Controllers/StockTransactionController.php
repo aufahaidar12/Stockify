@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ class StockTransactionController extends Controller
 {
     public function index()
     {
-        $transactions = StockTransaction::with(['product','user'])->latest()->get();
+        $transactions = StockTransaction::with(['product', 'user'])->latest()->get();
         return view('pages.transactions.index', compact('transactions'));
     }
 
@@ -33,15 +34,12 @@ class StockTransactionController extends Controller
         $validated['user_id'] = Auth::id();
         $validated['date'] = now();
 
-        $transaction = StockTransaction::create($validated);
-        // Update stok produk jika status Diterima atau Dikeluarkan
-        $product = Product::find($validated['product_id']);
-        if($validated['status'] == 'Diterima' && $validated['type'] == 'Masuk') {
-            $product->increment('stock', $validated['quantity']);
-        } elseif($validated['status'] == 'Dikeluarkan' && $validated['type'] == 'Keluar') {
-            $product->decrement('stock', $validated['quantity']);
-        }
+        // Buat transaksi stok
+        StockTransaction::create($validated);
 
-        return redirect()->route('transactions.index')->with('success','Transaksi berhasil disimpan');
+        // Tidak ada lagi update stok di produk karena kolom 'stock' sudah dihapus
+        // Jika suatu saat ingin menambahkan logika baru, bisa menggunakan perhitungan berdasarkan transaksi
+
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil disimpan');
     }
 }

@@ -26,12 +26,17 @@
                 </thead>
                 <tbody>
                     @foreach($products as $index => $product)
+                        @php
+                            $stockIn = $product->transactions->where('type', 'Masuk')->where('status', 'Diterima')->sum('quantity');
+                            $stockOut = $product->transactions->where('type', 'Keluar')->where('status', 'Dikeluarkan')->sum('quantity');
+                            $currentStock = $stockIn - $stockOut;
+                        @endphp
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="px-6 py-3 text-sm font-medium text-gray-800">{{ $product->name }}</td>
-                            <td class="px-6 py-3 text-center text-sm text-gray-600">{{ $product->stock }}</td>
+                            <td class="px-6 py-3 text-center text-sm text-gray-600">{{ $currentStock }}</td>
                             <td class="px-6 py-3 text-center">
                                 <input type="hidden" name="products[{{ $index }}][id]" value="{{ $product->id }}">
-                                <input type="number" name="products[{{ $index }}][stock]" value="{{ $product->stock }}" 
+                                <input type="number" name="products[{{ $index }}][stock]" value="{{ $currentStock }}"
                                     class="border border-gray-300 rounded-lg p-2 w-28 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </td>
                         </tr>
@@ -41,9 +46,9 @@
         </div>
 
         <div class="flex justify-end mt-6">
-            <button type="submit" 
+            <button type="submit"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow">
-                 Simpan 
+                Simpan
             </button>
         </div>
     </form>

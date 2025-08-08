@@ -35,17 +35,17 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:50|unique:products,sku',
-            'description' => 'nullable|string',
-            'purchase_price' => 'required|numeric|min:0',
-            'selling_price' => 'required|numeric|min:0',
-            'minimum_stock' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'category_id'      => 'required|exists:categories,id',
+            'supplier_id'      => 'required|exists:suppliers,id',
+            'name'             => 'required|string|max:255',
+            'sku'              => 'nullable|string|max:100',
+            'description'      => 'nullable|string',
+            'purchase_price'   => 'required|numeric|min:0',
+            'selling_price'    => 'required|numeric|min:0',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'minimum_stock'    => 'required|integer|min:0',
         ]);
-
+      
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
             $validated['image'] = $imagePath;
@@ -72,15 +72,15 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:50|unique:products,sku,' . $product->id,
-            'description' => 'nullable|string',
-            'purchase_price' => 'required|numeric|min:0',
-            'selling_price' => 'required|numeric|min:0',
-            'minimum_stock' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'category_id'      => 'required|exists:categories,id',
+            'supplier_id'      => 'required|exists:suppliers,id',
+            'name'             => 'required|string|max:255',
+            'sku'              => 'nullable|string|max:100',
+            'description'      => 'nullable|string',
+            'purchase_price'   => 'required|numeric|min:0',
+            'selling_price'    => 'required|numeric|min:0',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'minimum_stock'    => 'required|integer|min:0',
         ]);
 
         if ($request->hasFile('image')) {
