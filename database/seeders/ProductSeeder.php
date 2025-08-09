@@ -15,12 +15,13 @@ class ProductSeeder extends Seeder
         $categories = Category::all();
         $suppliers = Supplier::all();
 
-        if ($categories->count() === 0 || $suppliers->count() === 0) {
-            $this->command->warn(' Category dan Supplier harus di-seed terlebih dahulu.');
+        if ($categories->isEmpty() || $suppliers->isEmpty()) {
+            $this->command->warn('Kategori atau Supplier belum ada, seeder produk dilewati.');
             return;
         }
 
         $products = [
+            // Produk dari versi pertama
             [
                 'name' => 'Laptop ASUS ROG Strix',
                 'description' => 'Laptop gaming dengan performa tinggi.',
@@ -45,19 +46,61 @@ class ProductSeeder extends Seeder
                 'image' => 'images/products/biskuit_cokelat.jpg',
                 'minimum_stock' => 50
             ],
+
+            // Produk dari versi kedua
+            [
+                'name' => 'Kertas A4',
+                'description' => 'Kertas ukuran A4 80gsm',
+                'purchase_price' => 35000,
+                'selling_price' => 50000,
+                'image' => null,
+                'minimum_stock' => 10
+            ],
+            [
+                'name' => 'Pulpen Hitam',
+                'description' => 'Pulpen tinta hitam berkualitas',
+                'purchase_price' => 3000,
+                'selling_price' => 5000,
+                'image' => null,
+                'minimum_stock' => 50
+            ],
+            [
+                'name' => 'Buku Tulis',
+                'description' => 'Buku tulis 40 lembar',
+                'purchase_price' => 4000,
+                'selling_price' => 7000,
+                'image' => null,
+                'minimum_stock' => 30
+            ],
+            [
+                'name' => 'Stapler Mini',
+                'description' => 'Stapler ukuran kecil untuk keperluan kantor',
+                'purchase_price' => 15000,
+                'selling_price' => 25000,
+                'image' => null,
+                'minimum_stock' => 5
+            ],
+            [
+                'name' => 'Penghapus',
+                'description' => 'Penghapus pensil putih',
+                'purchase_price' => 2000,
+                'selling_price' => 4000,
+                'image' => null,
+                'minimum_stock' => 20
+            ],
         ];
 
-        foreach ($products as $data) {
+        foreach ($products as $p) {
             Product::create([
                 'category_id' => $categories->random()->id,
                 'supplier_id' => $suppliers->random()->id,
-                'name' => $data['name'],
+                'name' => $p['name'],
                 'sku' => strtoupper(Str::random(8)), // SKU unik
-                'description' => $data['description'],
-                'purchase_price' => $data['purchase_price'],
-                'selling_price' => $data['selling_price'],
-                'image' => $data['image'],
-                'minimum_stock' => $data['minimum_stock'],
+                'description' => $p['description'],
+                'purchase_price' => $p['purchase_price'],
+                'selling_price' => $p['selling_price'],
+                'image' => $p['image'],
+                'minimum_stock' => $p['minimum_stock'],
             ]);
         }
     }

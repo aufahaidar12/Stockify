@@ -10,6 +10,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +26,11 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     // Dashboard / Home
-    Route::get('/', function () {
-        return view('pages.practice.index');
-    })->name('index-practice');
+    Route::get('/', [DashboardController::class, 'index'])->name('index-practice');
+    
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    });
 
     // Practice routes
     Route::name('practice.')->group(function () {
@@ -71,6 +76,5 @@ Route::middleware('auth')->group(function () {
     // Users (admin only)
     Route::middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class);
-        
     });
 });
