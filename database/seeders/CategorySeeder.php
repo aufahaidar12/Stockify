@@ -10,16 +10,34 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Elektronik',
-            'Pakaian',
-            'Makanan & Minuman',
-            'Peralatan Rumah',
-            'Olahraga',
-            'Kesehatan'
+            [
+                'name' => 'Elektronik',
+                'description' => 'Produk elektronik seperti smartphone, laptop, televisi, dan perangkat lainnya.'
+            ],
+            [
+                'name' => 'Pakaian',
+                'description' => 'Berbagai jenis pakaian pria, wanita, dan anak-anak.'
+            ],
+            [
+                'name' => 'Makanan & Minuman',
+                'description' => 'Makanan kemasan, minuman, dan bahan masak.'
+            ],
+            [
+                'name' => 'Peralatan Rumah',
+                'description' => 'Peralatan rumah tangga dan perlengkapan dapur.'
+            ],
+            [
+                'name' => 'Olahraga',
+                'description' => 'Peralatan dan perlengkapan olahraga.'
+            ],
+            [
+                'name' => 'Kesehatan',
+                'description' => 'Produk kesehatan dan perawatan tubuh.'
+            ],
         ];
 
-        foreach ($categories as $name) {
-            Category::create(['name' => $name]);
+        foreach ($categories as $category) {
+            Category::create($category);
         }
     }
 }

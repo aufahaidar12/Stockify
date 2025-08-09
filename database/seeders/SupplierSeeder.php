@@ -12,16 +12,19 @@ class SupplierSeeder extends Seeder
         $suppliers = [
             [
                 'name' => 'PT Sumber Makmur',
+                'email' => 'info@sumbermakmur.com',
                 'phone' => '081234567890',
                 'address' => 'Jl. Raya Industri No. 10, Jakarta'
             ],
             [
                 'name' => 'CV Berkah Jaya',
+                'email' => 'contact@berkahjaya.co.id',
                 'phone' => '082198765432',
                 'address' => 'Jl. Sukajadi No. 21, Bandung'
             ],
             [
                 'name' => 'Toko Grosir Sentosa',
+                'email' => 'cs@grosirsentosa.com',
                 'phone' => '081355588899',
                 'address' => 'Jl. Malioboro No. 8, Yogyakarta'
             ]
