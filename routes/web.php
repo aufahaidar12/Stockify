@@ -8,7 +8,11 @@ use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ProductAttributeController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +59,12 @@ Route::middleware('auth')->group(function () {
 
     // Product Resource
     Route::resource('products', ProductController::class);
+    
+    Route::resource('attributes', ProductAttributeController::class);
+
+    Route::resource('categories', CategoryController::class);
+
+
 
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
