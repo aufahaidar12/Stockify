@@ -24,23 +24,19 @@ Route::get('/login', [LoginController::class, 'showLoginPage'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
+
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('index-practice');
-    
+
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 
     // Practice routes
     Route::name('practice.')->group(function () {
-        Route::get('/practice/1', function () {
-            return view('pages.practice.1');
-        })->name('first');
-
-        Route::get('/practice/2', function () {
-            return view('pages.practice.2');
-        })->name('second');
+        Route::view('/practice/1', 'pages.practice.1')->name('first');
+        Route::view('/practice/2', 'pages.practice.2')->name('second');
     });
 
     // Stock Transactions
@@ -59,22 +55,43 @@ Route::middleware('auth')->group(function () {
 
     // Product Resource
     Route::resource('products', ProductController::class);
-    
     Route::resource('attributes', ProductAttributeController::class);
-
     Route::resource('categories', CategoryController::class);
-
-
 
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/transactions', [ReportController::class, 'transactions'])->name('reports.transactions');
     Route::get('/reports/stocks', [ReportController::class, 'stocks'])->name('reports.stocks');
 
+    // Supplier
     Route::resource('suppliers', SupplierController::class);
 
-    // Users (admin only)
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('users', UserController::class);
-    });
+    // Users
+    Route::resource('users', UserController::class);
 });
+
+Route::middleware(['auth', 'role:manajer_gudang'])
+    ->prefix('manajer')
+    ->name('manajer.')
+    ->group(function () {
+        
+        // Dashboard Manajer Gudang
+        Route::get('/dashboard', [DashboardController::class, 'manajer'])->name('dashboard');
+
+        // Produk - hanya lihat & edit stok (tanpa hapus)
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+
+        // Transaksi stok - masuk & keluar
+        Route::get('/transactions', [StockTransactionController::class, 'index'])->name('transactions.index');
+        Route::get('/transactions/create', [StockTransactionController::class, 'create'])->name('transactions.create');
+        Route::post('/transactions', [StockTransactionController::class, 'store'])->name('transactions.store');
+        Route::get('/transactions/{transaction}/edit', [StockTransactionController::class, 'edit'])->name('transactions.edit');
+        Route::put('/transactions/{transaction}', [StockTransactionController::class, 'update'])->name('transactions.update');
+
+        // Laporan stok & transaksi
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/reports/stocks', [ReportController::class, 'stocks'])->name('reports.stocks');
+        Route::get('/reports/transactions', [ReportController::class, 'transactions'])->name('reports.transactions');
+    });

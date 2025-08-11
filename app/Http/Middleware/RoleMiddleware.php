@@ -10,14 +10,15 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
 
-        if (!in_array($user->role, $roles)) {
-            abort(403, 'Akses ditolak. Hanya admin yang boleh.');
+        // Pastikan role user cocok dengan salah satu role yang disyaratkan route
+        if (! in_array($user->role, $roles)) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki hak akses.');
         }
 
         return $next($request);

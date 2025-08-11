@@ -41,16 +41,6 @@
         </table>
     </div>
 
-    {{-- Tombol Export --}}
-    <div class="mt-6 flex gap-4">
-        <a href="#" 
-           class="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 shadow flex items-center gap-2">
-             Export PDF
-        </a>
-        <a href="#" 
-           class="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 shadow flex items-center gap-2">
-             Export Excel
-        </a>
-    </div>
+   
 </div>
 @endsection
