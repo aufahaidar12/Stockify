@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductAttributeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettingController;
 
 
 
@@ -68,6 +69,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Users
     Route::resource('users', UserController::class);
+
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'preview'])->name('settings.preview');
+
 });
 
 Route::middleware(['auth', 'role:manajer_gudang'])
