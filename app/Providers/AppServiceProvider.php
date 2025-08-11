@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View; 
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('*', function ($view) {
+        $app_name = session('app_name', 'Flowbite');
+        $app_logo = session('app_logo', 'static/images/logo.svg');
+
+        $view->with(compact('app_name', 'app_logo'));
+    });
     }
 }
