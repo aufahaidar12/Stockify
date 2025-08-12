@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        // Batasi akses hanya untuk admin pada fungsi tertentu
+        $this->middleware(function ($request, $next) {
+            if (Auth::user()->role !== 'admin') {
+                abort(403, 'Akses ditolak. Anda tidak memiliki hak akses.');
+            }
+            return $next($request);
+        })->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+    
     public function index()
     {
-        if (auth()->user()->role !== 'admin') {
-            abort(403, 'Hanya admin yang dapat mengakses halaman ini.');
-        }
-
         $users = User::all();
         return view('components.manajemen_pengguna.index', compact('users'));
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductAttributeController extends Controller
 {
