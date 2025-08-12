@@ -35,7 +35,6 @@
                     <th class="p-3 border-b">Jenis</th>
                     <th class="p-3 border-b">Jumlah</th>
                     <th class="p-3 border-b">Status</th>
-                    <th class="p-3 border-b">User</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,7 +59,6 @@
                                 {{ $trx->status }}
                             </span>
                         </td>
-                        <td class="p-3 border-b">{{ $trx->user->name ?? '-' }}</td>
                     </tr>
                 @empty
                     <tr>

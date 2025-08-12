@@ -44,12 +44,7 @@ class LoginController extends Controller
 
     private function redirectByRole($user)
     {
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->role === 'manajer_gudang') {
-            return redirect()->route('manajer.dashboard');
-        }
-
-        abort(403, 'Akses ditolak. Anda tidak memiliki hak akses.');
+        // Semua role diarahkan ke dashboard yang sama
+        return redirect()->route('dashboard');
     }
 }

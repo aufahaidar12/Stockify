@@ -14,12 +14,14 @@
     @endif
 
     {{-- Tombol Tambah Transaksi --}}
+    @if( Auth::user()->role === 'manajer_gudang')
     <div class="flex justify-between mb-4">
         <a href="{{ route('transactions.create') }}" 
            class="bg-blue-600 text-white px-5 py-2 rounded-lg shadow hover:bg-blue-700">
            + Tambah Transaksi
         </a>
     </div>
+    @endif
 
     {{-- Tabel Transaksi --}}
     <div class="overflow-x-auto bg-white rounded-lg shadow">

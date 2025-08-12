@@ -3,6 +3,7 @@
     <ul class="space-y-2">
 
         <!-- Dropdown Manajemen Produk -->
+        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
         <li>
             <button type="button"
                 class="flex items-center w-full p-2 text-gray-900 rounded-lg group hover:bg-gray-100
@@ -30,27 +31,30 @@
                         Daftar Produk
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('attributes.index') }}"
-                       class="flex items-center w-full p-2 pl-11 rounded-lg text-gray-900 hover:bg-gray-100
-                              dark:text-white dark:hover:bg-gray-700
-                              {{ request()->routeIs('attributes.*') ? 'bg-gray-200 dark:bg-gray-600 font-semibold' : '' }}">
-                        Atribut Produk
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('categories.index') }}"
-                       class="flex items-center w-full p-2 pl-11 rounded-lg text-gray-900 hover:bg-gray-100
-                              dark:text-white dark:hover:bg-gray-700
-                              {{ request()->routeIs('categories.*') ? 'bg-gray-200 dark:bg-gray-600 font-semibold' : '' }}">
-                        Kategori Produk
-                    </a>
-                </li>
-
+                @if(Auth::user()->role === 'admin')
+                    <li>
+                        <a href="{{ route('attributes.index') }}"
+                        class="flex items-center w-full p-2 pl-11 rounded-lg text-gray-900 hover:bg-gray-100
+                                dark:text-white dark:hover:bg-gray-700
+                                {{ request()->routeIs('attributes.*') ? 'bg-gray-200 dark:bg-gray-600 font-semibold' : '' }}">
+                            Atribut Produk
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('categories.index') }}"
+                        class="flex items-center w-full p-2 pl-11 rounded-lg text-gray-900 hover:bg-gray-100
+                                dark:text-white dark:hover:bg-gray-700
+                                {{ request()->routeIs('categories.*') ? 'bg-gray-200 dark:bg-gray-600 font-semibold' : '' }}">
+                            Kategori Produk
+                        </a>
+                    </li>
+                @endif
             </ul>
         </li>
+        @endif
 
         <!-- Dropdown Manajemen Stok -->
+        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang'  || Auth::user()->role === 'staff_gudang')
         <li>
             <button type="button"
                 class="flex items-center w-full p-2 text-gray-900 rounded-lg group hover:bg-gray-100
@@ -78,6 +82,7 @@
                         Transaksi Stok
                     </a>
                 </li>
+                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
                 <li>
                     <a href="{{ route('opname.index') }}"
                        class="flex items-center w-full p-2 pl-11 rounded-lg text-gray-900 hover:bg-gray-100
@@ -86,10 +91,13 @@
                         Stock Opname
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
+        @endif
 
         <!-- Menu Laporan -->
+        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
         <li>
             <a href="{{ route('reports.index') }}"
                class="flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100
@@ -102,8 +110,10 @@
                 <span class="ml-3">Laporan</span>
             </a>
         </li>
+        @endif
 
         <!-- Menu Manajemen Pengguna -->
+        @if(Auth::user()->role === 'admin')
         <li>
             <a href="{{ route('users.index') }}"
                class="flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100
@@ -116,8 +126,10 @@
                 <span class="ml-3">Manajemen Pengguna</span>
             </a>
         </li>
+        @endif
 
         <!-- Menu Manajemen Suppliers -->
+        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
         <li>
             <a href="{{ route('suppliers.index') }}"
                class="flex items-center w-full p-2 text-gray-900 rounded-lg hover:bg-gray-100
@@ -130,5 +142,6 @@
                 <span class="ml-3">Manajemen Suppliers</span>
             </a>
         </li>
+        @endif
     </ul>
 </x-sidebar-dashboard>

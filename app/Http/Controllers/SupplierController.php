@@ -36,7 +36,7 @@ class SupplierController extends Controller
     {
         return view('components.manajemen_suppliers.edit', compact('supplier'));
     }
-
+    
     public function update(Request $request, Supplier $supplier)
     {
         $request->validate([

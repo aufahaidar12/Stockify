@@ -4,6 +4,8 @@
 <div class="p-4">
     <!-- Ringkasan -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        {{-- Hanya admin yang bisa lihat jumlah produk --}}
+        @if(Auth::user()->role === 'admin')
         <!-- Jumlah Produk -->
         <div class="p-4 rounded-lg shadow text-white bg-gradient-to-r from-blue-500 to-blue-600 flex items-center gap-4">
             <div class="bg-white bg-opacity-20 p-3 rounded-full text-2xl">📦</div>
@@ -12,7 +14,12 @@
                 <p class="mt-1 text-3xl font-bold">{{ $jumlahProduk }}</p>
             </div>
         </div>
+        @endif      
 
+
+        <!-- Transaksi Masuk -->
+        {{-- Hanya admin dan manajer gudang yang bisa lihat --}}
+        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang'  || Auth::user()->role === 'staff_gudang')
         <!-- Transaksi Masuk -->
         <div class="p-4 rounded-lg shadow text-white bg-gradient-to-r from-green-500 to-green-600 flex items-center gap-4">
             <div class="bg-white bg-opacity-20 p-3 rounded-full text-2xl">📥</div>
@@ -30,17 +37,22 @@
                 <p class="mt-1 text-3xl font-bold">{{ $transaksiKeluar }}</p>
             </div>
         </div>
+        @endif
+
     </div>
 
     <!-- Grafik stok barang -->
+    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
     <div class="bg-white rounded-lg shadow dark:bg-gray-800 p-4 mb-6">
         <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">📊 Stok Barang Terendah</h3>
         <div class="relative h-72"> {{-- Tinggi dibatasi agar proporsional --}}
             <canvas id="stokChart"></canvas>
         </div>
     </div>
+    @endif
 
     <!-- Aktivitas Pengguna -->
+    @if(Auth::user()->role === 'admin')
     <div class="bg-white rounded-lg shadow dark:bg-gray-800 p-4">
         <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">👥 Aktivitas Pengguna Terbaru</h3>
         <ul>
@@ -54,9 +66,11 @@
             @endforeach
         </ul>
     </div>
+    @endif
 </div>
 
 <!-- Chart.js -->
+@if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('stokChart').getContext('2d');
@@ -95,4 +109,5 @@
         }
     });
 </script>
+@endif
 @endsection

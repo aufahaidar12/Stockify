@@ -14,12 +14,14 @@
     @endif
 
     <div class="flex justify-between mb-6">
-        <a href="{{ route('products.create') }}" 
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow">
-            + Tambah Produk
-        </a>
+        @if(Auth::user()->role === 'admin')
+            <a href="{{ route('products.create') }}" 
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow">
+                + Tambah Produk
+            </a>
+        @endif
     </div>
-
+    
     {{-- Tabel Produk --}}
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="min-w-full text-sm text-left border border-gray-200">
@@ -70,18 +72,22 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 flex items-center justify-center gap-3">
-                            <a href="{{ route('products.edit', $product->id) }}" 
-                                class="text-blue-600 hover:text-blue-800 font-medium">
-                                Edit
-                            </a>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" 
-                                  onsubmit="return confirm('Hapus produk ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
-                                    Hapus
-                                </button>
-                            </form>
+                            @if(Auth::user()->role === 'admin')
+                                <a href="{{ route('products.edit', $product->id) }}" 
+                                    class="text-blue-600 hover:text-blue-800 font-medium">
+                                    Edit
+                                </a>
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" 
+                                    onsubmit="return confirm('Hapus produk ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
+                                        Hapus
+                                    </button>
+                                </form>
+                            @else
+                                <span class="text-gray-400 italic">Tidak ada aksi</span>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -94,6 +100,7 @@
             </tbody>
         </table>
     </div>
+    
 
     {{-- Pagination --}}
     <div class="mt-6">

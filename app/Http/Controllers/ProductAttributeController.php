@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 
 class ProductAttributeController extends Controller
 {
+
+    public function __construct()
+    {
+        // Batasi akses hanya untuk admin pada fungsi tertentu
+        $this->middleware(function ($request, $next) {
+            if (Auth::user()->role !== 'admin') {
+                abort(403, 'Akses ditolak. Anda tidak memiliki hak akses.');
+            }
+            return $next($request);
+        })->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+    
     public function index()
     {
         $attributes = ProductAttribute::with('product')

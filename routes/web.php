@@ -13,8 +13,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingController;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,14 +23,11 @@ Route::get('/login', [LoginController::class, 'showLoginPage'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // Dashboard / Home
     Route::get('/', [DashboardController::class, 'index'])->name('index-practice');
-
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Practice routes
     Route::name('practice.')->group(function () {
@@ -44,6 +39,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/transactions', [StockTransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/create', [StockTransactionController::class, 'create'])->name('transactions.create');
     Route::post('/transactions', [StockTransactionController::class, 'store'])->name('transactions.store');
+    Route::get('/transactions/{transaction}/edit', [StockTransactionController::class, 'edit'])->name('transactions.edit');
+    Route::put('/transactions/{transaction}', [StockTransactionController::class, 'update'])->name('transactions.update');
 
     // Stock Opname
     Route::get('/stock-opname', function () {
@@ -70,33 +67,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Users
     Route::resource('users', UserController::class);
 
+    // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'preview'])->name('settings.preview');
-
 });
-
-Route::middleware(['auth', 'role:manajer_gudang'])
-    ->prefix('manajer')
-    ->name('manajer.')
-    ->group(function () {
-        
-        // Dashboard Manajer Gudang
-        Route::get('/dashboard', [DashboardController::class, 'manajer'])->name('dashboard');
-
-        // Produk - hanya lihat & edit stok (tanpa hapus)
-        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-
-        // Transaksi stok - masuk & keluar
-        Route::get('/transactions', [StockTransactionController::class, 'index'])->name('transactions.index');
-        Route::get('/transactions/create', [StockTransactionController::class, 'create'])->name('transactions.create');
-        Route::post('/transactions', [StockTransactionController::class, 'store'])->name('transactions.store');
-        Route::get('/transactions/{transaction}/edit', [StockTransactionController::class, 'edit'])->name('transactions.edit');
-        Route::put('/transactions/{transaction}', [StockTransactionController::class, 'update'])->name('transactions.update');
-
-        // Laporan stok & transaksi
-        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-        Route::get('/reports/stocks', [ReportController::class, 'stocks'])->name('reports.stocks');
-        Route::get('/reports/transactions', [ReportController::class, 'transactions'])->name('reports.transactions');
-    });

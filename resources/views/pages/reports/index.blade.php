@@ -7,6 +7,7 @@
     </h2>
 
     {{-- Card Laporan --}}
+    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manajer_gudang')
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {{-- Laporan Stok --}}
         <a href="{{ route('reports.stocks') }}" 
@@ -28,5 +29,23 @@
             <span class="mt-4 text-green-600 font-semibold inline-block">Lihat Detail →</span>
         </a>
     </div>
+    @endif
+
+    <!-- Aktivitas Pengguna -->
+    @if(Auth::user()->role === 'admin')
+    <div class="bg-white rounded-lg shadow dark:bg-gray-800 p-4">
+        <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">👥 Aktivitas Pengguna Terbaru</h3>
+        <ul>
+            @foreach($aktivitasPengguna as $user)
+                <li class="py-2 border-b border-gray-200 dark:border-gray-700 flex justify-between">
+                    <span>{{ $user->name }}</span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">
+                        {{ $user->updated_at->diffForHumans() }}
+                    </span>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 </div>
 @endsection

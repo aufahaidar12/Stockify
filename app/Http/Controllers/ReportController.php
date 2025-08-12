@@ -8,12 +8,21 @@ use App\Models\StockTransaction;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsExport;
+use App\Models\User;
 
 class ReportController extends Controller
 {
     public function index()
+
     {
-        return view('pages.reports.index');
+        $aktivitasPengguna = [];
+    
+        // Ambil data hanya untuk admin
+        if (auth()->user()->role === 'admin') {
+            $aktivitasPengguna = User::orderBy('updated_at', 'desc')->take(5)->get();
+        }
+    
+        return view('pages.reports.index', compact('aktivitasPengguna'));
     }
 
     public function transactions(Request $request)
