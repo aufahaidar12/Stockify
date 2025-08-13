@@ -33,6 +33,6 @@ class SettingController extends Controller
         $request->session()->put('app_logo', $app_logo);
 
         // Redirect ke halaman index agar URL tetap rapi & data tersimpan di session
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('dashboard');
     }
 }
